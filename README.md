@@ -62,7 +62,7 @@ Each station has a shareable link, e.g. `/#/crochet`.
 `npm run build` produces a fully static site in `dist/`. The build uses relative asset paths (`base: './'`), so it works at a domain root or in a sub-folder without changes.
 
 - **Netlify / Vercel / Cloudflare Pages:** build command `npm run build`, output directory `dist`.
-- **GitHub Pages:** publish the `dist/` folder (for example with the `actions/deploy-pages` workflow).
+- **GitHub Pages (set up):** `.github/workflows/deploy.yml` runs the tests, builds and publishes on every push to `main`. Live at https://studio-nest.github.io/creative-nerdiness-room/.
 - **Any static host:** upload the contents of `dist/`.
 
 Routing is hash-based, so no server rewrite rules are needed.
