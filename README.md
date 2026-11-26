@@ -34,6 +34,8 @@ npm run dev        # http://localhost:5173
 
 The test suite validates this file (unique ids, links, alt text, camera limits), so run `npm test` after editing.
 
+**If you add something that moves**, mark the moving group with `userData={LIVE}` (or `userData={LIVE_CHILDREN}` when each child moves on its own), from `src/scene/Merge.tsx`. Unmarked meshes are batched into the static room on load and will not move.
+
 To add a new kind of decoration: add the `kind` in `src/content/types.ts`, build it in `src/scene/props/`, and register it in `src/scene/props/decorRegistry.tsx`.
 
 To add a whole new station: add a `kind` in `src/content/types.ts`, build a model component in `src/scene/stations/`, register it in `src/scene/stations/registry.ts`, add an icon path in `src/ui/Icon.tsx`, then add the entry to `room.ts`.
@@ -78,7 +80,7 @@ Routing is hash-based, so no server rewrite rules are needed.
 - **Placeholder content.** Copy and showcase items are examples; there are no real project images or links yet.
 - **Tested in one browser engine.** Verified in a Chromium-based browser at desktop, tablet (768×1024) and phone (375×812) sizes using viewport emulation. Not yet tested on real iOS/Android hardware, Safari or Firefox.
 - **No automated tests of the 3D layer.** Unit and UI tests stub the canvas; the scene itself was checked by hand.
-- **Performance measured on one machine only.** After the restyle the overview runs at about 120 fps on the development laptop (roughly 750–1,500 draw calls depending on viewport). Phones start one quality tier down and the app steps down further if frames fall, but none of that has been exercised on a real slow device.
+- **Performance measured on one machine only.** Static parts of the room are batched, so the overview costs about 700 draw calls at high quality and about 390 at medium (down from about 1,500 and 750), and runs at about 120 fps on the development laptop. Phones start at medium and the app steps down further if frames fall, but none of that has been tried on a real phone.
 - **The cat, guitar and lamp are pointer-only.** The lamp has keyboard/HUD equivalents (`N`, "Night lights"); the cat and guitar are decorative easter eggs.
 - **The reference image's loft, kitchen and shower were not built.** Their props were adapted into the single room instead (wall shelf for the loft bookshelf, citrus tree and trailing vine for the kitchen plants).
 - **The 3D chunk is about 273 kB gzipped** (three.js + helpers), loaded behind the welcome screen.
@@ -88,7 +90,7 @@ Routing is hash-based, so no server rewrite rules are needed.
 ## Roadmap
 
 **Next**
-- Cut draw calls: merge static geometry per station and instance repeated pieces (books, leaves, bulbs).
+- Profile on real phones; if still heavy, instance repeated pieces (leaves, bulbs, wiggling books) and bake the outline shells.
 - Real content: project images, links, an "about / contact" station.
 - Device testing on iOS Safari, Android Chrome and Firefox; a real screen-reader pass.
 - Playwright smoke tests that drive the actual canvas.

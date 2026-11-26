@@ -80,6 +80,19 @@ With the app window in view: overview by day and night, close-ups of design, ill
 
 Dev-only quirk noted: after editing `room.ts` the hot reload can recreate the store under a still-mounted canvas and leave the welcome screen on "Tidying up". A normal page load is ready in about 1.2 s.
 
+## Performance pass: batching
+
+Goal: cut draw calls before sharing the link, since the restyle roughly doubled them.
+
+- Shared material cache for all primitive meshes, so identical colours share an instance.
+- `<Merge>` batches the static room per material on mount; moving parts are marked `LIVE` / `LIVE_CHILDREN` and batched inside themselves.
+- First attempt batched each station separately: overview 1,498 → 935. Batching the whole room as one root: → 701 (−53%). Medium quality: 386.
+- Verified: a script toured all seven stations and hovered each, checking that every marked moving part actually moved (all did except the lamp shade and guitar, which only move on hover/click). Clicked cat, guitar, lamp, tripod camera and polaroids; checked the book opening, brush painting and design desk by eye.
+- Found while testing: the photography hit area covered the floor lamp (moved there in the restyle), so clicking the lamp opened Photography. Narrowed and shifted the hit area.
+- Added `scene/Merge.test.ts` (6 tests).
+
+Not verified: real phones, which is the point of the exercise.
+
 ## Notes
 
 - Subagents were not used; the work was sequential and tightly coupled, so a single thread was more efficient.

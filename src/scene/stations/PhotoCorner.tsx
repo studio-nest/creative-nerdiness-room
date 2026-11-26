@@ -5,6 +5,7 @@ import { Box, Cyl } from '../primitives';
 import { drawPolaroid, useCanvasTexture } from '../textures';
 import { useStationAnim } from '../useStationAnim';
 import type { StationModelProps } from './registry';
+import { LIVE, LIVE_CHILDREN } from '../Merge';
 
 function Polaroid({ index, position }: { index: number; position: [number, number, number] }) {
   const tex = useCanvasTexture(drawPolaroid(index), 96, 96);
@@ -52,7 +53,7 @@ export function PhotoCorner({ station }: StationModelProps) {
       {/* string + polaroids on the wall (the wall is at local z = -0.6) */}
       <group position={[0, 0, -0.52]}>
         <Box size={[2.3, 0.015, 0.015]} position={[0, 3.02, 0]} color={palette.dark} shadow={false} />
-        <group ref={photos}>
+        <group ref={photos} userData={LIVE_CHILDREN}>
           {[-0.9, -0.45, 0, 0.45, 0.9].map((x, i) => (
             <Polaroid key={i} index={i} position={[x, 3.0 - Math.abs(Math.sin(i * 1.3)) * 0.03, 0.02]} />
           ))}
@@ -78,14 +79,14 @@ export function PhotoCorner({ station }: StationModelProps) {
       <Cyl args={[0.06, 0.06, 0.1, 10]} position={[0, 1.46, 0.35]} color={palette.metal} />
 
       {/* camera */}
-      <group ref={head} position={[0, 1.68, 0.35]}>
+      <group ref={head} userData={LIVE} position={[0, 1.68, 0.35]}>
         <Box size={[0.5, 0.32, 0.24]} color={palette.dark} roughness={0.5} />
         <Box size={[0.5, 0.1, 0.245]} position={[0, 0.11, 0]} color={palette.cream} />
         <Cyl args={[0.13, 0.13, 0.2, 20]} position={[0, -0.02, 0.2]} rotation-x={Math.PI / 2} color={palette.metal} metalness={0.3} roughness={0.4} />
         <Cyl args={[0.09, 0.09, 0.02, 20]} position={[0, -0.02, 0.31]} rotation-x={Math.PI / 2} color="#1d2a3a" roughness={0.1} metalness={0.5} />
         <Box size={[0.14, 0.08, 0.1]} position={[0.12, 0.2, 0]} color={palette.dark} />
         <Cyl args={[0.035, 0.035, 0.04, 10]} position={[-0.16, 0.18, 0]} color={palette.terracotta} />
-        <mesh ref={flashBulb} position={[0.12, 0.2, 0.06]}>
+        <mesh ref={flashBulb} userData={LIVE} position={[0.12, 0.2, 0.06]}>
           <sphereGeometry args={[0.03, 8, 6]} />
           <meshBasicMaterial color="#ffffff" toneMapped={false} />
         </mesh>

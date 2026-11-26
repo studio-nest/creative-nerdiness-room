@@ -7,9 +7,10 @@ import { useRoomStore } from '../../state/useRoomStore';
 import { env } from '../env';
 import { useInteractive } from '../Interactive';
 import { palette } from '../palette';
-import { Ball, Box, Cyl } from '../primitives';
+import { Ball, Box, Cyl, Toon } from '../primitives';
 import { drawCrayon, drawLeafPrint, drawPegboard, seeded, useCanvasTexture } from '../textures';
 import { Vine } from './Greenery';
+import { LIVE } from '../Merge';
 
 export interface DecorModelProps {
   variant?: string;
@@ -26,17 +27,17 @@ export function NonLa() {
   return (
     <group>
       <Cyl args={[0.025, 0.025, 0.14, 6]} position={[0, 0.3, 0.07]} rotation={[Math.PI / 2, 0, 0]} color={palette.woodDark} />
-      <group ref={hat} position={[0, 0.3, 0.1]}>
+      <group ref={hat} userData={LIVE} position={[0, 0.3, 0.1]}>
         {/* Tip mostly up, brim resting on the wall: from the room it reads as a hat in profile, not a target. */}
         <group position={[0, -0.36, 0.5]} rotation={[0.22, 0, 0]}>
           <mesh castShadow>
             <coneGeometry args={[0.5, 0.42, 28]} />
-            <inkToonMaterial color={palette.straw} />
+            <Toon color={palette.straw} />
           </mesh>
           {[0.16, 0.31, 0.45].map((r) => (
             <mesh key={r} position={[0, 0.21 - (r / 0.5) * 0.42 + 0.012, 0]} rotation-x={Math.PI / 2}>
               <torusGeometry args={[r, 0.008, 4, 28]} />
-              <inkToonMaterial color="#c9a866" />
+              <Toon color="#c9a866" />
             </mesh>
           ))}
         </group>
@@ -67,7 +68,7 @@ export function Guitar() {
   return (
     <group {...handlers}>
       <group position={[0, 0, 0.42]} rotation={[-0.22, 0, 0]}>
-        <group ref={body}>
+        <group ref={body} userData={LIVE}>
           <Ball radius={0.3} position={[0, 0.34, 0]} scale={[1, 1, 0.3]} color={palette.wood} />
           <Ball radius={0.22} position={[0, 0.72, 0]} scale={[1, 1, 0.34]} color={palette.wood} />
           <mesh position={[0, 0.5, 0.095]}>
@@ -112,7 +113,7 @@ export function Pegboard() {
         {[-0.035, 0.035].map((x) => (
           <mesh key={x} position={[x, 0.08, 0]}>
             <torusGeometry args={[0.035, 0.012, 5, 12]} />
-            <inkToonMaterial color={palette.terracotta} />
+            <Toon color={palette.terracotta} />
           </mesh>
         ))}
         <Box size={[0.02, 0.2, 0.01]} position={[0.012, -0.06, 0]} rotation={[0, 0, 0.12]} color={palette.metal} shadow={false} />
@@ -122,7 +123,7 @@ export function Pegboard() {
       {[palette.rose, palette.mustard, palette.mint].map((c, i) => (
         <mesh key={c} position={[-0.38 + i * 0.13, -0.2, 0.06]} castShadow>
           <torusGeometry args={[0.04, 0.02, 6, 14]} />
-          <inkToonMaterial color={c} />
+          <Toon color={c} />
         </mesh>
       ))}
       <Box size={[0.4, 0.03, 0.12]} position={[0.28, -0.24, 0.07]} color={palette.wood} />
@@ -155,7 +156,7 @@ export function Corkboard() {
         <group key={i} position={[n.p[0], n.p[1], 0.031 + i * 0.001]} rotation-z={n.r}>
           <mesh>
             <planeGeometry args={n.s} />
-            <inkToonMaterial color={n.c} />
+            <Toon color={n.c} />
           </mesh>
           <Ball radius={0.016} position={[0, n.s[1] / 2 - 0.025, 0.012]} color={i % 2 ? palette.terracotta : palette.blue} shadow={false} segments={6} />
         </group>
@@ -254,7 +255,7 @@ export function Beanbag({ variant = 'sketchbook' }: DecorModelProps) {
       <Ball radius={0.5} position={[-0.08, 0.5, -0.12]} scale={[1.15, 0.42, 1]} segments={14} color={shade} />
       {reading && (
         <RoundedBox args={[0.5, 0.14, 0.44]} radius={0.06} position={[-0.2, 0.72, -0.26]} rotation={[0.5, 0.4, 0]} castShadow>
-          <inkToonMaterial color={palette.butter} />
+          <Toon color={palette.butter} />
         </RoundedBox>
       )}
       <group position={[0.14, reading ? 0.68 : 0.7, 0.12]} rotation={[0.08, -0.4, 0]}>
@@ -271,12 +272,12 @@ export function LetterTray() {
       <Cyl args={[0.46, 0.42, 0.05, 22]} position={[0, 0.025, 0]} color={palette.wood} />
       <mesh position={[0, 0.05, 0]} rotation-x={Math.PI / 2}>
         <torusGeometry args={[0.44, 0.03, 6, 26]} />
-        <inkToonMaterial color={palette.woodDark} />
+        <Toon color={palette.woodDark} />
       </mesh>
       <Cyl args={[0.08, 0.07, 0.14, 12]} position={[-0.18, 0.12, -0.1]} color={palette.cream} />
       <mesh position={[-0.27, 0.12, -0.1]}>
         <torusGeometry args={[0.04, 0.012, 5, 10]} />
-        <inkToonMaterial color={palette.cream} />
+        <Toon color={palette.cream} />
       </mesh>
       <Ball radius={0.035} position={[-0.18, 0.12, -0.02]} scale={[1, 1, 0.2]} color={palette.leaf} shadow={false} segments={6} />
       {[0, 1, 2].map((i) => (

@@ -4,8 +4,9 @@ import { RoundedBox, Sparkles } from '@react-three/drei';
 import { CatmullRomCurve3, Color, MathUtils, Vector3, type Group, type Mesh, type MeshBasicMaterial, type MeshToonMaterial } from 'three';
 import { env } from './env';
 import { palette } from './palette';
-import { Ball, Box, Cyl } from './primitives';
+import { Ball, Box, Cyl, Toon } from './primitives';
 import { drawPlanks, drawPoster, drawWallDots, seeded, useCanvasTexture } from './textures';
+import { LIVE_CHILDREN } from './Merge';
 
 const WALL_H = 4.4;
 const HALF = 4.2;
@@ -66,7 +67,7 @@ function Window({ position }: { position: [number, number, number] }) {
         <circleGeometry args={[0.17, 24]} />
         <meshBasicMaterial ref={orb} toneMapped={false} />
       </mesh>
-      <group ref={stars}>
+      <group ref={stars} userData={LIVE_CHILDREN}>
         {starPositions.map((p, i) => (
           <mesh key={i} position={p}>
             <circleGeometry args={[0.014, 6]} />
@@ -74,7 +75,7 @@ function Window({ position }: { position: [number, number, number] }) {
           </mesh>
         ))}
       </group>
-      <group ref={clouds}>
+      <group ref={clouds} userData={LIVE_CHILDREN}>
         {[0.1, -0.25].map((y, i) => (
           <mesh key={i} position={[0, y, 0.02]} scale={[1, 0.42, 1]}>
             <circleGeometry args={[0.22 - i * 0.05, 20]} />
@@ -145,9 +146,9 @@ function FairyLights({ from, to, count }: { from: [number, number, number]; to: 
     <group>
       <mesh>
         <tubeGeometry args={[curve, 48, 0.012, 5]} />
-        <inkToonMaterial color={palette.dark} />
+        <Toon color={palette.dark} />
       </mesh>
-      <group ref={bulbs}>
+      <group ref={bulbs} userData={LIVE_CHILDREN}>
         {points.map((p, i) => (
           <mesh key={i} position={[p.x, p.y - 0.06, p.z]} userData={{ ink: false }}>
             <sphereGeometry args={[0.055, 10, 8]} />
@@ -163,13 +164,13 @@ function Rug() {
   return (
     <group position={[0.45, 0, 0.45]} rotation-y={0.06}>
       <RoundedBox args={[4.0, 0.03, 2.9]} radius={0.012} position={[0, 0.016, 0]} receiveShadow>
-        <inkToonMaterial color={palette.lavender} />
+        <Toon color={palette.lavender} />
       </RoundedBox>
       <RoundedBox args={[3.6, 0.03, 2.5]} radius={0.012} position={[0, 0.021, 0]} receiveShadow>
-        <inkToonMaterial color={palette.lavenderLight} />
+        <Toon color={palette.lavenderLight} />
       </RoundedBox>
       <RoundedBox args={[3.3, 0.03, 2.2]} radius={0.012} position={[0, 0.026, 0]} receiveShadow>
-        <inkToonMaterial color={palette.lavender} />
+        <Toon color={palette.lavender} />
       </RoundedBox>
       {/* fringe */}
       {Array.from({ length: 18 }, (_, i) => (

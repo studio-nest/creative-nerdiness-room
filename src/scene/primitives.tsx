@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import type { ThreeElements } from '@react-three/fiber';
 import './ink';
+import { toon } from './materials';
 
 type MeshProps = Omit<ThreeElements['mesh'], 'args'>;
 
@@ -15,7 +16,12 @@ interface MatProps {
 
 /** PBR-style props are accepted for call-site convenience but the toon shader only uses colour and glow. */
 function Mat({ color, emissive, emissiveIntensity = 0 }: MatProps) {
-  return <inkToonMaterial color={color} emissive={emissive ?? '#000000'} emissiveIntensity={emissiveIntensity} />;
+  return <primitive object={toon(color, emissive, emissiveIntensity)} attach="material" dispose={null} />;
+}
+
+/** A shared, cached toon material for meshes written out by hand. */
+export function Toon({ color, emissive, emissiveIntensity }: { color: string; emissive?: string; emissiveIntensity?: number }) {
+  return <Mat color={color} emissive={emissive} emissiveIntensity={emissiveIntensity} />;
 }
 
 type ShapeProps = MeshProps & MatProps & { children?: ReactNode; shadow?: boolean };

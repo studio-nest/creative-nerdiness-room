@@ -56,13 +56,13 @@ export function InkOutlines({ color = '#4a2f3d', thickness = 0.02 }: { color?: s
       const targets: Mesh[] = [];
       scene.traverse((o) => {
         const mesh = o as Mesh;
-        if (!mesh.isMesh || mesh.userData.isInk || mesh.userData.inked || mesh.userData.ink === false) return;
+        if (!mesh.isMesh || !mesh.visible || mesh.userData.isInk || mesh.userData.inked || mesh.userData.ink === false) return;
         if (Array.isArray(mesh.material)) return;
         const mat = mesh.material as Material & { isMeshToonMaterial?: boolean };
         if (!mat.isMeshToonMaterial || mat.transparent || SKIP.has(mesh.geometry.type)) return;
         // Pins, keys and eyes are too small for a line to read; skip them.
         if (!mesh.geometry.boundingSphere) mesh.geometry.computeBoundingSphere();
-        if ((mesh.geometry.boundingSphere?.radius ?? 1) < 0.045) return;
+        if (!mesh.userData.merged && (mesh.geometry.boundingSphere?.radius ?? 1) < 0.045) return;
         targets.push(mesh);
       });
       for (const mesh of targets) {

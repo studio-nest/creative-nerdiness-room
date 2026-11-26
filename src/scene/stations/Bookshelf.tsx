@@ -7,6 +7,7 @@ import { Vine } from '../props/Greenery';
 import { seeded } from '../textures';
 import { useStationAnim } from '../useStationAnim';
 import type { StationModelProps } from './registry';
+import { LIVE, LIVE_CHILDREN } from '../Merge';
 
 const SPINES = [palette.terracotta, palette.mustard, palette.sage, palette.teal, palette.plum, palette.rose, palette.blue, palette.cream];
 const SHELF_Y = [0.12, 0.86, 1.6, 2.34];
@@ -50,7 +51,7 @@ export function Bookshelf({ station }: StationModelProps) {
     if (glow.current) glow.current.emissiveIntensity = active * (1.2 + Math.sin(t * 3) * 0.3) + env.night * 0.2;
     // neighbours shuffle a little when hovered
     wiggle.current?.children.forEach((b, i) => {
-      b.position.z = Math.max(0, Math.sin(t * 2 + i * 0.8)) * hover * 0.05 * (i % 3 === 0 ? 1 : 0);
+      b.position.z = Math.max(0, Math.sin(t * 2 + i * 2.4)) * hover * 0.05;
     });
   });
 
@@ -63,8 +64,12 @@ export function Bookshelf({ station }: StationModelProps) {
         <Box key={y} size={[W + 0.12, 0.06, 0.5]} position={[0, y, 0.02]} color={palette.wood} />
       ))}
 
-      <group ref={wiggle}>
-        {books.map((b, i) => (
+      {books.filter((_, i) => i % 3 !== 0).map((b, i) => (
+        <Box key={i} size={[b.w, b.h, 0.32]} position={[b.x, b.y, 0]} rotation={[0, 0, b.lean]} color={b.color} shadow={false} />
+      ))}
+      {/* every third book shuffles forward on hover */}
+      <group ref={wiggle} userData={LIVE_CHILDREN}>
+        {books.filter((_, i) => i % 3 === 0).map((b, i) => (
           <group key={i}>
             <Box size={[b.w, b.h, 0.32]} position={[b.x, b.y, 0]} rotation={[0, 0, b.lean]} color={b.color} shadow={false} />
           </group>
@@ -72,12 +77,12 @@ export function Bookshelf({ station }: StationModelProps) {
       </group>
 
       {/* hero book: two covers hinged at the spine with glowing pages between */}
-      <group ref={hero} position={[0, 1.94, 0.02]}>
-        <group ref={coverL}>
+      <group ref={hero} userData={LIVE} position={[0, 1.94, 0.02]}>
+        <group ref={coverL} userData={LIVE}>
           <Box size={[0.03, 0.56, 0.36]} position={[-0.03, 0, 0]} color={palette.plum} />
           <Box size={[0.004, 0.3, 0.2]} position={[-0.047, 0.04, 0]} color={palette.mustard} shadow={false} />
         </group>
-        <group ref={coverR}>
+        <group ref={coverR} userData={LIVE}>
           <Box size={[0.03, 0.56, 0.36]} position={[0.03, 0, 0]} color={palette.plum} />
         </group>
         <mesh>

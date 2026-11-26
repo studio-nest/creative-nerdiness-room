@@ -3,9 +3,10 @@ import { RoundedBox } from '@react-three/drei';
 import { MathUtils, type Group, type Mesh, type MeshToonMaterial } from 'three';
 import { env } from '../env';
 import { palette } from '../palette';
-import { Ball, Box, Cyl } from '../primitives';
+import { Ball, Box, Cyl, Toon } from '../primitives';
 import { useStationAnim } from '../useStationAnim';
 import type { StationModelProps } from './registry';
+import { LIVE, LIVE_CHILDREN } from '../Merge';
 
 const CARDS: { pos: [number, number]; size: [number, number]; color: string }[] = [
   { pos: [-0.12, 0.17], size: [0.5, 0.2], color: palette.terracotta },
@@ -53,7 +54,7 @@ export function DesignDesk({ station }: StationModelProps) {
     <group>
       {/* desk */}
       <RoundedBox args={[2.7, 0.1, 1.15]} radius={0.04} position={[0, 0.95, 0]} castShadow receiveShadow>
-        <inkToonMaterial color={palette.woodLight} />
+        <Toon color={palette.woodLight} />
       </RoundedBox>
       {[[-1.2, -0.45], [1.2, -0.45], [-1.2, 0.45], [1.2, 0.45]].map(([x, z], i) => (
         <Cyl key={i} args={[0.05, 0.035, 0.9, 10]} position={[x, 0.45, z]} color={palette.woodDark} />
@@ -67,7 +68,7 @@ export function DesignDesk({ station }: StationModelProps) {
       <Cyl args={[0.035, 0.035, 0.36, 10]} position={[-0.15, 1.2, -0.3]} color={palette.dark} />
       <group position={[-0.15, 1.72, -0.28]} rotation-x={-0.06}>
         <RoundedBox args={[1.38, 0.86, 0.07]} radius={0.03} castShadow>
-          <inkToonMaterial color={palette.dark} />
+          <Toon color={palette.dark} />
         </RoundedBox>
         <mesh position={[0, 0, 0.037]}>
           <planeGeometry args={[1.28, 0.76]} />
@@ -89,7 +90,7 @@ export function DesignDesk({ station }: StationModelProps) {
             <planeGeometry args={[0.6, 0.04]} />
             <meshBasicMaterial color="#d9c9b5" toneMapped={false} />
           </mesh>
-          <group ref={cards} position={[0.05, -0.03, 0]}>
+          <group ref={cards} userData={LIVE_CHILDREN} position={[0.05, -0.03, 0]}>
             {CARDS.map((c, i) => (
               <mesh key={i} position={[c.pos[0], c.pos[1], 0.004]}>
                 <planeGeometry args={c.size} />
@@ -97,7 +98,7 @@ export function DesignDesk({ station }: StationModelProps) {
               </mesh>
             ))}
           </group>
-          <mesh ref={cursor} position={[0, 0, 0.07]} rotation-z={0.5}>
+          <mesh ref={cursor} userData={LIVE} position={[0, 0, 0.07]} rotation-z={0.5}>
             <coneGeometry args={[0.03, 0.08, 3]} />
             <meshBasicMaterial color={palette.ink} toneMapped={false} />
           </mesh>
@@ -106,7 +107,7 @@ export function DesignDesk({ station }: StationModelProps) {
 
       {/* keyboard, mouse, sketchbook */}
       <RoundedBox args={[0.72, 0.03, 0.24]} radius={0.012} position={[-0.15, 1.02, 0.22]} castShadow>
-        <inkToonMaterial color={palette.cream} />
+        <Toon color={palette.cream} />
       </RoundedBox>
       {Array.from({ length: 24 }, (_, i) => (
         <Box key={i} size={[0.065, 0.014, 0.045]} position={[-0.47 + (i % 8) * 0.082, 1.04, 0.15 + Math.floor(i / 8) * 0.066]} color={i === 5 || i === 18 ? palette.terracotta : '#e8d6bd'} shadow={false} />
@@ -116,7 +117,7 @@ export function DesignDesk({ station }: StationModelProps) {
       <group position={[-0.92, 1.0, 0.14]} rotation={[0, 0.3, 0]}>
         <group rotation-x={-1.15} position={[0, 0.13, 0]}>
           <RoundedBox args={[0.62, 0.42, 0.035]} radius={0.015} castShadow>
-            <inkToonMaterial color={palette.dark} />
+            <Toon color={palette.dark} />
           </RoundedBox>
           <mesh position={[0, 0, 0.019]}>
             <planeGeometry args={[0.54, 0.34]} />
@@ -152,7 +153,7 @@ export function DesignDesk({ station }: StationModelProps) {
       </group>
 
       {/* swatch fan */}
-      <group ref={swatches} position={[0.72, 1.01, 0.38]}>
+      <group ref={swatches} userData={LIVE_CHILDREN} position={[0.72, 1.01, 0.38]}>
         {SWATCHES.map((c, i) => (
           <group key={i} position={[0, i * 0.006, 0]}>
             <Box size={[0.09, 0.006, 0.34]} position={[0, 0, -0.17]} color={c} shadow={false} />
@@ -165,9 +166,9 @@ export function DesignDesk({ station }: StationModelProps) {
         <Cyl args={[0.075, 0.065, 0.14, 16]} position={[0, 0.07, 0]} color={palette.teal} />
         <mesh position={[0.085, 0.07, 0]} rotation-y={0}>
           <torusGeometry args={[0.04, 0.012, 6, 12]} />
-          <inkToonMaterial color={palette.teal} />
+          <Toon color={palette.teal} />
         </mesh>
-        <group ref={steam} position={[0, 0.17, 0]}>
+        <group ref={steam} userData={LIVE_CHILDREN} position={[0, 0.17, 0]}>
           {[0, 1, 2].map((i) => (
             <mesh key={i}>
               <sphereGeometry args={[0.035, 8, 6]} />

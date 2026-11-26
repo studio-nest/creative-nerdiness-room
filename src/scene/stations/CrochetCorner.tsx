@@ -1,9 +1,10 @@
 import { useRef } from 'react';
 import type { Group } from 'three';
 import { palette } from '../palette';
-import { Ball, Cyl } from '../primitives';
+import { Ball, Cyl, Toon } from '../primitives';
 import { useStationAnim } from '../useStationAnim';
 import type { StationModelProps } from './registry';
+import { LIVE, LIVE_CHILDREN } from '../Merge';
 
 function YarnBall({ color, radius = 0.17 }: { color: string; radius?: number }) {
   return (
@@ -12,7 +13,7 @@ function YarnBall({ color, radius = 0.17 }: { color: string; radius?: number }) 
       {[0, 1, 2].map((i) => (
         <mesh key={i} rotation={[i * 1.1, i * 0.7, i * 0.4]}>
           <torusGeometry args={[radius * 1.005, radius * 0.06, 5, 20]} />
-          <inkToonMaterial color={color} />
+          <Toon color={color} />
         </mesh>
       ))}
     </group>
@@ -64,14 +65,14 @@ export function CrochetCorner({ station }: StationModelProps) {
         <Ball radius={0.55} position={[0, 0.28, 0]} scale={[1, 0.5, 1]} color={palette.rose} roughness={1} />
         <mesh position={[0, 0.28, 0]} rotation-x={Math.PI / 2}>
           <torusGeometry args={[0.545, 0.03, 6, 28]} />
-          <inkToonMaterial color="#d77a94" />
+          <Toon color="#d77a94" />
         </mesh>
         <Ball radius={0.05} position={[0, 0.555, 0]} color={palette.cream} shadow={false} />
         {/* bunny amigurumi */}
-        <group ref={bunny} position={[0, 0.52, 0]} rotation-y={-0.3}>
+        <group ref={bunny} userData={LIVE} position={[0, 0.52, 0]} rotation-y={-0.3}>
           <Ball radius={0.2} position={[0, 0.18, 0]} scale={[1, 1.05, 0.95]} color={palette.cream} roughness={1} />
           <Ball radius={0.17} position={[0, 0.47, 0]} color={palette.cream} roughness={1} />
-          <group ref={ears} position={[0, 0.6, 0]}>
+          <group ref={ears} userData={LIVE} position={[0, 0.6, 0]}>
             <Ball radius={0.05} position={[-0.07, 0.14, 0]} scale={[0.8, 3, 0.5]} color={palette.cream} roughness={1} />
             <Ball radius={0.05} position={[0.07, 0.14, 0]} scale={[0.8, 3, 0.5]} color={palette.cream} roughness={1} />
           </group>
@@ -85,7 +86,7 @@ export function CrochetCorner({ station }: StationModelProps) {
           {/* tiny scarf */}
           <mesh position={[0, 0.34, 0]} rotation-x={Math.PI / 2}>
             <torusGeometry args={[0.13, 0.035, 6, 18]} />
-            <inkToonMaterial color={palette.terracotta} />
+            <Toon color={palette.terracotta} />
           </mesh>
         </group>
       </group>
@@ -100,10 +101,10 @@ export function CrochetCorner({ station }: StationModelProps) {
         {[0.12, 0.26, 0.4].map((y) => (
           <mesh key={y} position={[0, y, 0]} rotation-x={Math.PI / 2}>
             <torusGeometry args={[0.34 + y * 0.2, 0.018, 5, 26]} />
-            <inkToonMaterial color={palette.wood} />
+            <Toon color={palette.wood} />
           </mesh>
         ))}
-        <group ref={yarn}>
+        <group ref={yarn} userData={LIVE_CHILDREN}>
           {YARN.map((y, i) => (
             <group key={i} position={y.home}>
               <YarnBall color={y.color} radius={i === 3 ? 0.17 : 0.16} />
@@ -123,7 +124,7 @@ export function CrochetCorner({ station }: StationModelProps) {
         ].map(([s, c], i) => (
           <mesh key={i} position={[0, 0, i * 0.003]} receiveShadow>
             <planeGeometry args={[s as number, s as number]} />
-            <inkToonMaterial color={c as string} />
+            <Toon color={c as string} />
           </mesh>
         ))}
       </group>

@@ -9,6 +9,7 @@ import { env } from './env';
 import { HotspotProjector } from './HotspotProjector';
 import { StationGroup } from './Interactive';
 import { Lighting } from './Lighting';
+import { Merge } from './Merge';
 import { InkOutlines } from './InkOutlines';
 import { DecorItem } from './props/decorRegistry';
 import { Cat, Lamp } from './props/Props';
@@ -55,9 +56,9 @@ export default function Experience({ reducedMotion }: { reducedMotion: boolean }
       gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
       role="img"
       aria-label="3D view of the creative room. Use the station buttons to explore it."
-      onCreated={({ gl }) => {
+      onCreated={({ gl, scene, get }) => {
         // Dev-only handle for reading renderer stats from the console.
-        if (import.meta.env.DEV) (window as unknown as { __gl?: unknown }).__gl = gl;
+        if (import.meta.env.DEV) Object.assign(window, { __gl: gl, __scene: scene, __getState: get, __room: useRoomStore });
         // Fallback for background tabs, where no animation frame may ever arrive.
         window.setTimeout(() => useRoomStore.getState().setReady(), 1500);
         gl.domElement.addEventListener('webglcontextlost', (e) => {
@@ -72,20 +73,23 @@ export default function Experience({ reducedMotion }: { reducedMotion: boolean }
       <Lighting />
       <CameraRig />
       <HotspotProjector />
-      <RoomShell />
-      <Lamp position={[-3.55, 0, 0.02]} />
-      <Cat position={[-0.75, 0.04, 1.15]} rotationY={-0.3} />
-      {decor.map((item) => (
-        <DecorItem key={item.id} item={item} />
-      ))}
-      {stations.map((station) => {
-        const Model = stationModels[station.kind];
-        return (
-          <StationGroup key={station.id} station={station}>
-            <Model station={station} />
-          </StationGroup>
-        );
-      })}
+      {/* Everything static in the room is batched together, one draw call per material. */}
+      <Merge>
+        <RoomShell />
+        <Lamp position={[-3.55, 0, 0.02]} />
+        <Cat position={[-0.75, 0.04, 1.15]} rotationY={-0.3} />
+        {decor.map((item) => (
+          <DecorItem key={item.id} item={item} />
+        ))}
+        {stations.map((station) => {
+          const Model = stationModels[station.kind];
+          return (
+            <StationGroup key={station.id} station={station}>
+              <Model station={station} />
+            </StationGroup>
+          );
+        })}
+      </Merge>
       <InkOutlines />
     </Canvas>
   );

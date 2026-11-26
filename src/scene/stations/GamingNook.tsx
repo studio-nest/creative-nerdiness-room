@@ -3,9 +3,10 @@ import { RoundedBox } from '@react-three/drei';
 import { CanvasTexture, NearestFilter, SRGBColorSpace, type Group, type MeshToonMaterial } from 'three';
 import { env } from '../env';
 import { palette } from '../palette';
-import { Ball, Box, Cyl } from '../primitives';
+import { Ball, Box, Cyl, Toon } from '../primitives';
 import { useStationAnim } from '../useStationAnim';
 import type { StationModelProps } from './registry';
+import { LIVE, LIVE_CHILDREN } from '../Merge';
 
 const GW = 64;
 const GH = 48;
@@ -55,7 +56,7 @@ function Figure({ color, hair }: { color: string; hair: string }) {
       <Cyl args={[0.1, 0.1, 0.03, 14]} position={[0, 0.015, 0]} color={palette.dark} />
       <mesh position={[0, 0.14, 0]} castShadow>
         <coneGeometry args={[0.09, 0.22, 10]} />
-        <inkToonMaterial color={color} />
+        <Toon color={color} />
       </mesh>
       <Ball radius={0.085} position={[0, 0.3, 0]} color="#ffe2c9" />
       <Ball radius={0.09} position={[0, 0.325, -0.015]} scale={[1, 0.8, 1]} color={hair} />
@@ -109,7 +110,7 @@ export function GamingNook({ station }: StationModelProps) {
     <group>
       {/* low cabinet */}
       <RoundedBox args={[1.9, 0.5, 0.75]} radius={0.04} position={[0, 0.36, 0]} castShadow receiveShadow>
-        <inkToonMaterial color={palette.woodLight} />
+        <Toon color={palette.woodLight} />
       </RoundedBox>
       {[-0.8, 0.8].map((x) => (
         <Cyl key={x} args={[0.04, 0.03, 0.12, 8]} position={[x, 0.06, 0.25]} color={palette.woodDark} />
@@ -120,7 +121,7 @@ export function GamingNook({ station }: StationModelProps) {
       {/* CRT */}
       <group position={[-0.25, 1.1, 0]}>
         <RoundedBox args={[1.15, 0.95, 0.8]} radius={0.08} castShadow>
-          <inkToonMaterial color={palette.cream} />
+          <Toon color={palette.cream} />
         </RoundedBox>
         <Box size={[0.9, 0.7, 0.04]} position={[-0.06, 0.04, 0.4]} color={palette.dark} shadow={false} />
         <mesh position={[-0.06, 0.04, 0.425]}>
@@ -140,9 +141,9 @@ export function GamingNook({ station }: StationModelProps) {
       <Box size={[0.16, 0.2, 0.04]} position={[0.76, 0.76, -0.26]} rotation={[-0.2, 0.3, 0]} color={palette.rose} />
 
       {/* controller: lifts off the floor as if someone picked it up */}
-      <group ref={pad} position={[-0.45, 0.05, 1.0]}>
+      <group ref={pad} userData={LIVE} position={[-0.45, 0.05, 1.0]}>
         <RoundedBox args={[0.42, 0.07, 0.22]} radius={0.03} castShadow>
-          <inkToonMaterial color={palette.cream} />
+          <Toon color={palette.cream} />
         </RoundedBox>
         <Box size={[0.1, 0.02, 0.03]} position={[-0.11, 0.04, 0]} color={palette.dark} shadow={false} />
         <Box size={[0.03, 0.02, 0.1]} position={[-0.11, 0.04, 0]} color={palette.dark} shadow={false} />
@@ -156,7 +157,7 @@ export function GamingNook({ station }: StationModelProps) {
 
       {/* figure shelf on the wall */}
       <Box size={[1.3, 0.05, 0.26]} position={[0.15, 2.5, -0.62]} color={palette.wood} />
-      <group ref={figures} position={[0.15, 2.525, -0.62]}>
+      <group ref={figures} userData={LIVE_CHILDREN} position={[0.15, 2.525, -0.62]}>
         <group position={[-0.42, 0, 0]}><Figure color={palette.terracotta} hair={palette.ink} /></group>
         <group position={[0, 0, 0]}><Figure color={palette.mint} hair={palette.rose} /></group>
         <group position={[0.42, 0, 0]}><Figure color={palette.plum} hair={palette.mustard} /></group>

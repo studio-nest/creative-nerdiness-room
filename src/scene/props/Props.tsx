@@ -6,7 +6,8 @@ import { useRoomStore } from '../../state/useRoomStore';
 import { env } from '../env';
 import { useInteractive } from '../Interactive';
 import { palette } from '../palette';
-import { Ball, Box, Cyl } from '../primitives';
+import { Ball, Box, Cyl, Toon } from '../primitives';
+import { LIVE, LIVE_CHILDREN } from '../Merge';
 
 /** Floor lamp. Click it to switch between day and night. */
 export function Lamp({ position }: { position: [number, number, number] }) {
@@ -27,7 +28,7 @@ export function Lamp({ position }: { position: [number, number, number] }) {
     <group position={position} {...handlers}>
       <Cyl args={[0.32, 0.36, 0.08, 24]} position={[0, 0.04, 0]} color={palette.woodDark} />
       <Cyl args={[0.035, 0.035, 2.0, 10]} position={[0, 1.05, 0]} color={palette.woodDark} />
-      <group ref={shade} position={[0, 2.15, 0]}>
+      <group ref={shade} userData={LIVE} position={[0, 2.15, 0]}>
         <Cyl args={[0.24, 0.42, 0.5, 24]} color={palette.mustard} roughness={0.7} />
         <mesh position={[0, -0.08, 0]}>
           <sphereGeometry args={[0.13, 14, 10]} />
@@ -56,12 +57,12 @@ export function Plant({ position, scale = 1 }: { position: [number, number, numb
     <group position={position} scale={scale}>
       <Cyl args={[0.26, 0.2, 0.42, 16]} position={[0, 0.21, 0]} color={palette.terracotta} />
       <Cyl args={[0.28, 0.28, 0.06, 16]} position={[0, 0.43, 0]} color="#c95f49" />
-      <group ref={leaves} position={[0, 0.45, 0]}>
+      <group ref={leaves} userData={LIVE_CHILDREN} position={[0, 0.45, 0]}>
         {Array.from({ length: 7 }, (_, i) => (
           <group key={i} rotation={[0, (i / 7) * Math.PI * 2, 0.5]}>
             <mesh position={[0, 0.45 + (i % 3) * 0.14, 0]} scale={[0.32, 1, 0.08]} castShadow>
               <sphereGeometry args={[0.42 + (i % 2) * 0.1, 10, 8]} />
-              <inkToonMaterial color={i % 2 ? palette.leaf : palette.sage} />
+              <Toon color={i % 2 ? palette.leaf : palette.sage} />
             </mesh>
           </group>
         ))}
@@ -97,25 +98,25 @@ export function Cat({ position, rotationY = 0 }: { position: [number, number, nu
   const fur = '#f2a65a';
   return (
     <group position={position} rotation-y={rotationY} {...handlers}>
-      <group ref={body}>
+      <group ref={body} userData={LIVE}>
         <Ball radius={0.3} position={[0, 0.2, 0]} scale={[1.25, 0.7, 0.95]} color={fur} />
         <Ball radius={0.2} position={[0.3, 0.26, 0.1]} color={fur} />
         <mesh position={[0.24, 0.45, 0.02]} rotation={[0, 0, 0.2]} castShadow>
           <coneGeometry args={[0.07, 0.14, 4]} />
-          <inkToonMaterial color={fur} />
+          <Toon color={fur} />
         </mesh>
         <mesh position={[0.38, 0.44, 0.16]} rotation={[0, 0, -0.2]} castShadow>
           <coneGeometry args={[0.07, 0.14, 4]} />
-          <inkToonMaterial color={fur} />
+          <Toon color={fur} />
         </mesh>
         {/* sleepy eyes + nose */}
         <Box size={[0.07, 0.015, 0.01]} position={[0.4, 0.29, 0.25]} rotation={[0, 0.6, 0]} color={palette.ink} shadow={false} />
         <Box size={[0.07, 0.015, 0.01]} position={[0.47, 0.29, 0.13]} rotation={[0, 1.1, 0]} color={palette.ink} shadow={false} />
         <Ball radius={0.022} position={[0.47, 0.24, 0.2]} color={palette.rose} shadow={false} />
-        <group ref={tail} position={[-0.32, 0.12, 0]}>
+        <group ref={tail} userData={LIVE} position={[-0.32, 0.12, 0]}>
           <mesh position={[-0.12, 0, 0.14]} rotation={[Math.PI / 2, 0, 0.6]} castShadow>
             <torusGeometry args={[0.2, 0.05, 8, 14, Math.PI]} />
-            <inkToonMaterial color="#e08f3f" />
+            <Toon color="#e08f3f" />
           </mesh>
         </group>
       </group>

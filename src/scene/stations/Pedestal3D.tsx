@@ -2,9 +2,10 @@ import { useRef } from 'react';
 import { MathUtils, type Group, type Mesh, type MeshBasicMaterial, type MeshToonMaterial } from 'three';
 import { env } from '../env';
 import { palette } from '../palette';
-import { Box, Cyl } from '../primitives';
+import { Box, Cyl, Toon } from '../primitives';
 import { useStationAnim } from '../useStationAnim';
 import type { StationModelProps } from './registry';
+import { LIVE, LIVE_CHILDREN } from '../Merge';
 
 /** A floating low-poly study: shows its wireframe on hover, flies apart when focused. */
 export function Pedestal3D({ station }: StationModelProps) {
@@ -42,12 +43,12 @@ export function Pedestal3D({ station }: StationModelProps) {
       <Cyl args={[0.42, 0.5, 0.12, 8]} position={[0, 0.06, 0]} color={palette.cream} flat />
       <Cyl args={[0.3, 0.36, 0.86, 8]} position={[0, 0.55, 0]} color={palette.paper} flat />
       <Cyl args={[0.44, 0.38, 0.1, 8]} position={[0, 1.03, 0]} color={palette.cream} flat />
-      <mesh ref={ring} position={[0, 1.09, 0]} rotation-x={-Math.PI / 2}>
+      <mesh ref={ring} userData={LIVE} position={[0, 1.09, 0]} rotation-x={-Math.PI / 2}>
         <ringGeometry args={[0.24, 0.3, 6]} />
         <inkToonMaterial color={palette.mint} emissive={palette.mint} emissiveIntensity={0.6} />
       </mesh>
 
-      <group ref={shape} position={[0, 1.62, 0]}>
+      <group ref={shape} userData={LIVE} position={[0, 1.62, 0]}>
         <mesh castShadow>
           <icosahedronGeometry args={[0.36, 0]} />
           <inkToonMaterial ref={solid} color="#3f9d7c" transparent />
@@ -58,18 +59,18 @@ export function Pedestal3D({ station }: StationModelProps) {
         </mesh>
       </group>
 
-      <group ref={orbit}>
+      <group ref={orbit} userData={LIVE_CHILDREN}>
         <mesh castShadow>
           <boxGeometry args={[0.16, 0.16, 0.16]} />
-          <inkToonMaterial color={palette.terracotta} />
+          <Toon color={palette.terracotta} />
         </mesh>
         <mesh castShadow>
           <coneGeometry args={[0.1, 0.2, 5]} />
-          <inkToonMaterial color={palette.mustard} />
+          <Toon color={palette.mustard} />
         </mesh>
         <mesh castShadow>
           <torusGeometry args={[0.09, 0.04, 6, 10]} />
-          <inkToonMaterial color={palette.plum} />
+          <Toon color={palette.plum} />
         </mesh>
       </group>
 

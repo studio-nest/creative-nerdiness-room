@@ -190,8 +190,10 @@ export const room: RoomContent = {
       placement: {
         position: [-3.4, 0, 1.55],
         rotationY: Math.PI / 2,
-        hitbox: [2.4, 3.3, 1.3],
-        hitboxOffset: [0, 1.65, 0],
+        // Rotated onto the left wall: local x runs along -z, local z along +x.
+        // Kept clear of the floor lamp so the lamp stays clickable.
+        hitbox: [1.7, 3.3, 1.0],
+        hitboxOffset: [-0.2, 1.65, 0.1],
         hotspot: [0, 3.35, -0.2],
       },
       camera: {

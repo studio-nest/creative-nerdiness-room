@@ -67,6 +67,17 @@ Three layers turn the 3D scene into something closer to a drawing:
 
 `content/room.ts#decor` lists non-content objects (`kind`, `position`, `rotationY`, `scale`, `variant`). `scene/props/decorRegistry.tsx` maps each kind to a model in `scene/props/Decor.tsx` or `Greenery.tsx`, and `Experience.tsx` loops over the list. Wall-mounted pieces are authored facing +z with their origin on the wall.
 
+## Batching static geometry
+
+The room is built from roughly 1,300 small meshes. Drawn one by one, each with an outline and a shadow, that was about 1,500 draw calls for the overview. Two pieces bring it down:
+
+- **Shared materials** (`scene/materials.ts`). The `Box` / `Cyl` / `Ball` primitives and `<Toon>` take their material from a cache keyed by colour and glow, so identical-looking meshes share one material instance. Animated surfaces (screens, bulbs, the glowing book) keep their own inline `<inkToonMaterial>`; never mutate a cached material.
+- **`<Merge>`** (`scene/Merge.tsx`) wraps everything static in `Experience.tsx`. On mount, `batchStatic` groups meshes by *rigid piece* and material, bakes each group into one geometry, adds it as a single mesh, and hides the originals. The originals stay in the scene so React keeps owning them and R3F pointer events still hit them; the batched meshes ignore raycasts.
+
+A rigid piece is the room itself, or anything marked `userData={LIVE}` (its own transform animates: the brush, the bunny, a vine), or each child of something marked `userData={LIVE_CHILDREN}` (the figures, polaroids, yarn balls). Those are batched inside themselves, so they still move as one. Meshes too small for an outline are batched separately with outlines off, matching the outline pass.
+
+**Rule for new code:** anything that moves must be marked, or it gets frozen into the static batch. `?nomerge` in the URL (dev only) turns batching off for comparison.
+
 ## Day / night
 
 `scene/Lighting.tsx` eases a single shared number (`env.night`, 0→1) each frame. Lights, the window sky, fairy lights, screens and the lamp read it in their own `useFrame`. The page background cross-fades with CSS.
@@ -82,12 +93,22 @@ Three layers turn the 3D scene into something closer to a drawing:
 - Code-built geometry only: a few hundred small meshes, no texture downloads; canvas textures are created once and disposed on unmount.
 - Three quality tiers in the store: **high** (shadows + outlines, DPR ≤ 1.75), **medium** (outlines only, DPR ≤ 1.5), **low** (neither, DPR ≤ 1.25). drei's `PerformanceMonitor` steps down one tier each time the frame rate declines; small touch devices start at medium.
 - Shadows and outlines are skipped for tiny objects, where they cost a draw call and cannot be seen.
+- Static geometry is batched (see above).
 - One shadow-casting light (2048² map). Night lighting adds a single point light.
 - Per-frame work avoids React: animations mutate refs; the CRT game redraws a 64×48 canvas at ~12 fps.
 - The canvas is unmounted entirely in list view.
-- Measured: the original (pre-restyle) scene ran at ~120 fps on the development laptop. After the restyle the overview costs about 1,500 draw calls and 170k triangles at high quality (about 1,000 in a station close-up); ~120 fps on the development laptop. Initial JS ≈ 78 kB gzip; scene chunk ≈ 273 kB gzip.
+- Measured on the development laptop at an ~600×800 viewport, quality forced to high:
 
-Known headroom, and the obvious next step: merge static geometry per station (which would also let static outlines collapse into a few draw calls), instance repeated meshes (books, leaves, keys, bulbs), switch to `frameloop="demand"` when idle under reduced motion.
+  | View | Before batching | After |
+  | --- | --- | --- |
+  | Overview | 1,498 | 701 (386 at medium) |
+  | Design close-up | 899 | 459 |
+  | Games close-up | 526 | 306 |
+  | Crochet close-up | 704 | 346 |
+
+  ~120 fps either way on that machine; the point is headroom on phones. Initial JS ≈ 78 kB gzip; scene chunk ≈ 274 kB gzip.
+
+Remaining headroom: about 120 animated pieces are still drawn one by one (vine leaves, figures, books that wiggle); instancing them would help, as would switch to `frameloop="demand"` when idle under reduced motion.
 
 ## Testing
 
@@ -95,6 +116,7 @@ Known headroom, and the obvious next step: merge static geometry per station (wh
 | --- | --- |
 | `content/content.test.ts` | Content integrity: ids, copy, links, alt text, model registered per station and decor kind, placements in bounds, camera poses within orbit limits |
 | `lib/camera.test.ts` | Spherical conversion, fit factor, layout breakpoint, focal offsets, degenerate viewport |
+| `scene/Merge.test.ts` | Batching: shared-material meshes merge in place, lone meshes and transparent/non-toon materials are left alone, LIVE and LIVE_CHILDREN pieces batch inside themselves, undo restores the originals |
 | `state/useRoomStore.test.ts` | Focus, tour wrap-around, hover reset, mode toggle, fallback, toasts |
 | `ui/ui.test.tsx` | Full app around a stubbed scene: welcome gating, dock, panel focus management, keyboard tour, HUD toggles, list view, deep links, no-WebGL fallback |
 

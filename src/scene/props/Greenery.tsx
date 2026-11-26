@@ -3,8 +3,9 @@ import { useFrame } from '@react-three/fiber';
 import type { Group } from 'three';
 import { env } from '../env';
 import { palette } from '../palette';
-import { Ball, Box, Cyl } from '../primitives';
+import { Ball, Box, Cyl, Toon } from '../primitives';
 import { seeded } from '../textures';
+import { LIVE, LIVE_CHILDREN } from '../Merge';
 
 const GREENS = [palette.leaf, palette.sage, '#4f8a57', palette.sageSoft];
 
@@ -33,7 +34,7 @@ export function Vine({ length = 1.4, leaves = 11, seed = 1, position = [0, 0, 0]
   });
 
   return (
-    <group ref={root} position={position}>
+    <group ref={root} userData={LIVE} position={position}>
       <Cyl args={[0.008, 0.008, length, 5]} position={[0, -length / 2, 0]} color="#5d7a4c" shadow={false} />
       {items.map((l, i) => (
         <Ball key={i} radius={0.075 * l.s} segments={8} position={[l.x, l.y, l.z]} rotation={[0.3, 0, l.tilt]} scale={[1, 1.25, 0.3]} color={l.color} />
@@ -82,7 +83,7 @@ export function Monstera() {
     <group>
       <Cyl args={[0.3, 0.22, 0.46, 16]} position={[0, 0.23, 0]} color={palette.terracotta} />
       <Cyl args={[0.32, 0.32, 0.07, 16]} position={[0, 0.47, 0]} color="#c95f49" />
-      <group ref={leaves} position={[0, 0.48, 0]}>
+      <group ref={leaves} userData={LIVE_CHILDREN} position={[0, 0.48, 0]}>
         {items.map((l, i) => (
           <group key={i} rotation={[0, l.yaw, l.lean]}>
             <Cyl args={[0.014, 0.018, l.h, 5]} position={[0, l.h / 2, 0]} color="#5d7a4c" shadow={false} />
@@ -118,18 +119,18 @@ export function CitrusTree() {
       <Cyl args={[0.26, 0.2, 0.4, 16]} position={[0, 0.2, 0]} color={palette.terracotta} />
       <Cyl args={[0.28, 0.28, 0.06, 16]} position={[0, 0.41, 0]} color="#c95f49" />
       <Cyl args={[0.03, 0.045, 0.6, 7]} position={[0, 0.7, 0]} color={palette.woodDark} />
-      <group ref={crown} position={[0, 1.12, 0]}>
+      <group ref={crown} userData={LIVE} position={[0, 1.12, 0]}>
         <mesh castShadow>
           <icosahedronGeometry args={[0.34, 1]} />
-          <inkToonMaterial color={palette.leaf} />
+          <Toon color={palette.leaf} />
         </mesh>
         <mesh castShadow position={[0.2, 0.16, 0.05]}>
           <icosahedronGeometry args={[0.24, 1]} />
-          <inkToonMaterial color={palette.sage} />
+          <Toon color={palette.sage} />
         </mesh>
         <mesh castShadow position={[-0.2, 0.1, -0.05]}>
           <icosahedronGeometry args={[0.22, 1]} />
-          <inkToonMaterial color="#4f8a57" />
+          <Toon color="#4f8a57" />
         </mesh>
         {fruit.map((p, i) => (
           <Ball key={i} radius={0.06} segments={8} position={p} color={palette.orange} />

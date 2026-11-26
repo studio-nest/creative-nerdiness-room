@@ -1,10 +1,11 @@
 import { useRef } from 'react';
 import type { Group } from 'three';
 import { palette } from '../palette';
-import { Ball, Box, Cyl } from '../primitives';
+import { Ball, Box, Cyl, Toon } from '../primitives';
 import { drawPainting, useCanvasTexture } from '../textures';
 import { useStationAnim } from '../useStationAnim';
 import type { StationModelProps } from './registry';
+import { LIVE, LIVE_CHILDREN } from '../Merge';
 
 const PAINTS = [palette.terracotta, palette.mustard, palette.mint, palette.blue, palette.rose, palette.plum];
 
@@ -40,7 +41,7 @@ export function Easel({ station }: StationModelProps) {
       <Box size={[0.07, 2.4, 0.07]} position={[0, 1.15, -0.42]} rotation={[0.3, 0, 0]} color={palette.woodDark} />
       <Box size={[1.25, 0.07, 0.2]} position={[0, 0.8, 0.2]} color={palette.wood} />
 
-      <group ref={canvas} position={[0, 1.58, 0.14]} rotation-x={-0.14}>
+      <group ref={canvas} userData={LIVE} position={[0, 1.58, 0.14]} rotation-x={-0.14}>
         <Box size={[1.14, 1.42, 0.05]} color={palette.paper} />
         <mesh position={[0, 0, 0.027]}>
           <planeGeometry args={[1.06, 1.34]} />
@@ -49,21 +50,21 @@ export function Easel({ station }: StationModelProps) {
       </group>
 
       {/* paint blobs that bloom around the canvas when focused */}
-      <group ref={splats}>
+      <group ref={splats} userData={LIVE_CHILDREN}>
         {PAINTS.map((c, i) => (
           <mesh key={c} position={[i % 2 ? 0.74 : -0.74, 1.5, 0.2 + (i % 3) * 0.08]} scale={0.001}>
             <icosahedronGeometry args={[0.07, 1]} />
-            <inkToonMaterial color={c} />
+            <Toon color={c} />
           </mesh>
         ))}
       </group>
 
-      <group ref={brush} position={[0.5, 0.84, 0.24]} rotation={[0, 0, 1.45]}>
+      <group ref={brush} userData={LIVE} position={[0.5, 0.84, 0.24]} rotation={[0, 0, 1.45]}>
         <Cyl args={[0.014, 0.018, 0.42, 8]} color={palette.mustard} />
         <Cyl args={[0.02, 0.02, 0.06, 8]} position={[0, 0.23, 0]} color={palette.metal} metalness={0.4} roughness={0.4} />
         <mesh position={[0, 0.3, 0]} castShadow>
           <coneGeometry args={[0.028, 0.1, 8]} />
-          <inkToonMaterial color={palette.terracotta} />
+          <Toon color={palette.terracotta} />
         </mesh>
       </group>
 
