@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { room } from '../content';
+import { ArtistLinks } from './ArtistLinks';
 import { useRoomStore } from '../state/useRoomStore';
 
 /** Loading screen that turns into the front door once the room has drawn. */
@@ -47,6 +48,7 @@ export function Welcome() {
           </button>
         </div>
         <p className="welcome__hint">Drag to look around · click or tap things · arrow keys to tour</p>
+        <ArtistLinks />
       </div>
     </div>
   );

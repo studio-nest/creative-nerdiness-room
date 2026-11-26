@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { room } from '../content';
 import { useRoomStore } from '../state/useRoomStore';
+import { ArtistLinks } from './ArtistLinks';
 import { Icon } from './Icon';
 
 const SHORTCUTS: [string, string][] = [
@@ -55,6 +56,7 @@ export function Hud() {
               </div>
             ))}
           </dl>
+          <ArtistLinks />
           <button type="button" className="btn" onClick={() => setHelp(false)}>
             Got it
           </button>

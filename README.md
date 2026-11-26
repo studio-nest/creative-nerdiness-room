@@ -77,7 +77,7 @@ Routing is hash-based, so no server rewrite rules are needed.
 
 ## Known limitations
 
-- **Placeholder content.** Copy and showcase items are examples; there are no real project images or links yet.
+- **Content is mostly real, but has no pictures yet.** Projects, roles and links come from kei.framer.website. The crochet station is still a holding card ("Pieces coming soon"), and no showcase card has an image yet.
 - **Tested in one browser engine.** Verified in a Chromium-based browser at desktop, tablet (768×1024) and phone (375×812) sizes using viewport emulation. Not yet tested on real iOS/Android hardware, Safari or Firefox.
 - **No automated tests of the 3D layer.** Unit and UI tests stub the canvas; the scene itself was checked by hand.
 - **Performance measured on one machine only.** Static parts of the room are batched, so the overview costs about 700 draw calls at high quality and about 390 at medium (down from about 1,500 and 750), and runs at about 120 fps on the development laptop. Phones start at medium and the app steps down further if frames fall, but none of that has been tried on a real phone.
@@ -91,7 +91,7 @@ Routing is hash-based, so no server rewrite rules are needed.
 
 **Next**
 - Profile on real phones; if still heavy, instance repeated pieces (leaves, bulbs, wiggling books) and bake the outline shells.
-- Real content: project images, links, an "about / contact" station.
+- Project images on the showcase cards, real crochet pieces, and an "about / contact" station.
 - Device testing on iOS Safari, Android Chrome and Firefox; a real screen-reader pass.
 - Playwright smoke tests that drive the actual canvas.
 

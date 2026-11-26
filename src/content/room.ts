@@ -3,19 +3,22 @@ import type { RoomContent } from './types';
 /**
  * THE ROOM'S CONTENT.
  *
- * Edit this file to change what the room says. The showcase items below are
- * starter placeholders written in the artist's voice: swap in real projects,
- * add `href` / `image` fields, and they appear in the panel and the list view
- * with no rendering changes.
+ * Edit this file to change what the room says. Projects come from
+ * kei.framer.website; add `image` + `imageAlt` to a showcase item to show a
+ * picture, and it appears in the panel and the list view with no rendering
+ * changes.
  */
 export const room: RoomContent = {
   artist: {
     name: 'Creative Nerdiness',
-    role: 'Independent multidisciplinary artist',
+    role: 'Kei · designer, illustrator & photographer in Singapore',
     intro:
-      'A room full of half-finished sketches, too many yarn balls and one very opinionated cat. Poke around: everything in here is something I make, love or am still learning.',
+      "Hi, I'm Kei, a Vietnamese designer and artist based in Singapore. Visual maker, photo-taker, scribbler. This room is full of half-finished sketches, too many yarn balls and one very opinionated cat: poke around, everything in here is something I make, love or am still learning.",
     links: [
-      // Add real links here, e.g. { label: 'Instagram', href: 'https://…' }
+      { label: 'Portfolio', href: 'https://kei.framer.website/' },
+      { label: 'Instagram', href: 'https://www.instagram.com/creative.nerdiness/' },
+      { label: 'Behance', href: 'https://behance.net/NNKhanh' },
+      { label: 'LinkedIn', href: 'https://www.linkedin.com/in/nnkhanh' },
     ],
   },
 
@@ -77,26 +80,29 @@ export const room: RoomContent = {
       title: 'Graphic design & UI/UX',
       tagline: 'Pixels pushed with love (and a strict 8-point grid).',
       body: [
-        'This desk is where brands get their colours, apps get their flows and I argue with myself about corner radii. I like interfaces that feel friendly on the first tap and layouts that leave room to breathe.',
-        'Most projects start on paper, move to wireframes, and end with a tidy design system someone else can actually use.',
+        'Ten years of designing things people actually use: character merchandise, internal software, consumer apps, brands and large-format graphics. I like interfaces that feel friendly on the first tap and layouts that leave room to breathe.',
+        "I've often been the only designer on the team, so I'm used to owning everything from the logo to the last edge case.",
       ],
       accent: '#e2725b',
-      note: 'Currently: building a tiny design system for my own projects.',
+      note: "Now: Graphic Designer at Q's Advertising, Singapore, on advertising, experiential and spatial projects.",
       items: [
         {
-          title: 'Brand identities',
-          blurb: 'Logos, palettes and type systems for small creative businesses.',
-          tags: ['Branding', 'Typography'],
+          title: 'LOOP · Employee rewards platform',
+          blurb: 'A FinTech platform where employees trade points for vouchers, gift cards, company swag or donations. UI/UX, logo, branding and the Webflow build (2023).',
+          tags: ['UI/UX', 'Branding', 'Webflow'],
+          href: 'https://kei.framer.website/work/loop',
         },
         {
-          title: 'App & web interfaces',
-          blurb: 'Wireframes to polished UI, with prototypes you can actually click.',
-          tags: ['UI/UX', 'Prototyping'],
+          title: 'Skica · Skincare app',
+          blurb: 'A skincare app with a cute AI assistant. As co-founder and the only designer I owned the characters, UX, UI and branding, and the MVP was acquired by a US beauty company (2020–21).',
+          tags: ['Mobile', 'UI/UX', 'Branding'],
+          href: 'https://kei.framer.website/work/skica',
         },
         {
-          title: 'Posters & print',
-          blurb: 'Event posters, zines and stickers that survive a real printer.',
-          tags: ['Print', 'Layout'],
+          title: 'StudioDesk · Tools for artists',
+          blurb: 'A web app of tools for working artists that I designed, built and product-managed (2026).',
+          tags: ['UI/UX', 'Web dev', 'Product'],
+          href: 'https://studio-desk.vercel.app/',
         },
       ],
       placement: {
@@ -121,26 +127,28 @@ export const room: RoomContent = {
       title: 'Digital illustration & fanart',
       tagline: 'Drawing the characters that live rent-free in my head.',
       body: [
-        'Character art, cosy scenes and an honestly unreasonable amount of fanart. I paint digitally, but I still think in pencil lines and chunky brush strokes.',
+        "Character art, IP character extension and an honestly unreasonable amount of fanart. I've painted custom commissions through VGen and sold my own merch at artist alleys around Singapore.",
         'Fanart is how I say thank you to the stories that shaped me; original pieces are where those influences get remixed.',
       ],
       accent: '#d9a441',
-      note: 'Currently: a seasonal illustration series, one painting a week.',
+      note: 'Freelance illustration commissions: ongoing.',
       items: [
         {
-          title: 'Character illustrations',
-          blurb: 'Original characters with expressive faces and loud colour palettes.',
-          tags: ['Characters', 'Digital painting'],
+          title: 'Digital Art Collection',
+          blurb: 'Two dozen digital paintings and illustrations, from character pieces to full scenes.',
+          tags: ['Digital painting', 'Illustration'],
+          href: 'https://kei.framer.website/work/digital-art',
         },
         {
-          title: 'Fanart collection',
-          blurb: 'Tributes to favourite games, anime and visual novels.',
-          tags: ['Fanart', 'Anime'],
+          title: 'Merchandise designs',
+          blurb: 'Character standees, acrylic charms and other goods, taken from illustration through packaging to production.',
+          tags: ['Product', 'Packaging', 'Merch'],
+          href: 'https://kei.framer.website/work/merchandise',
         },
         {
-          title: 'Stickers & prints',
-          blurb: 'Small illustrations designed to end up on laptops and walls.',
-          tags: ['Merch', 'Print'],
+          title: 'Licensed character merchandise',
+          blurb: 'Senior designer at TAGGER Licensing (2015–18): physical character merchandise, and working with Disney Singapore to bring Disney goods to Vietnam.',
+          tags: ['Licensing', 'Merchandise'],
         },
       ],
       placement: {
@@ -165,26 +173,27 @@ export const room: RoomContent = {
       title: 'Photography',
       tagline: 'Collecting light, one quiet moment at a time.',
       body: [
-        'I carry a camera mostly as an excuse to slow down. Street corners, late-afternoon light, tiny details most people walk past.',
-        'Photography feeds everything else in this room: composition for design, colour for illustration, mood for stories.',
+        'I carry a camera mostly as an excuse to slow down. These days that means portraits: directing the shoot, taking the photos and retouching them.',
+        "I've also shot product and mood photography for food brands, and photography feeds everything else in this room: composition for design, colour for illustration, mood for stories.",
       ],
       accent: '#4f8a8b',
-      note: 'Currently: shooting a series about windows at golden hour.',
       items: [
         {
-          title: 'Street & travel',
-          blurb: 'Wandering with one lens and no plan.',
-          tags: ['Street', 'Travel'],
+          title: 'Portraits',
+          blurb: 'Portrait sessions, from direction to retouching.',
+          tags: ['Portrait', 'Retouching'],
+          href: 'https://www.playbook.com/s/keiphotokraft/portraits',
         },
         {
-          title: 'Still life & details',
-          blurb: 'Desks, cups, plants: the small scenes of everyday life.',
-          tags: ['Still life', 'Colour'],
+          title: 'Product & mood photography',
+          blurb: 'Seasonal product and mood shoots for two food brands, The Cakery and KIRR Concept, in Hong Kong (2019–20).',
+          tags: ['Product', 'Food'],
         },
         {
-          title: 'Portraits of friends',
-          blurb: 'Relaxed, natural-light portraits of people I like.',
-          tags: ['Portrait', 'Natural light'],
+          title: 'Gingerbread tutorial',
+          blurb: 'A cooking tutorial I shot, edited and colour-graded for YouTube.',
+          tags: ['Video', 'Colour grading'],
+          href: 'https://kei.framer.website/#reels',
         },
       ],
       placement: {
@@ -212,25 +221,21 @@ export const room: RoomContent = {
       tagline: 'Branching paths, bittersweet endings, one more chapter.',
       body: [
         'I love stories you can step inside. Visual novels taught me how much feeling fits into a sprite, a text box and a well-timed pause.',
-        'I write small interactive stories of my own and collect the ones that made me cry at 2am.',
+        'So I design for storytellers too, from a game-jam visual novel to a whole platform for authors building their worlds.',
       ],
       accent: '#8e6aa8',
-      note: 'Currently: outlining a short visual novel about a lighthouse keeper.',
       items: [
         {
-          title: 'Short visual novel (in progress)',
-          blurb: 'A cosy mystery with three endings and hand-drawn sprites.',
-          tags: ['Writing', 'Game dev'],
+          title: 'Heartlander Housewife · Visual novel',
+          blurb: 'Made in a week for the Singapore Heritage Game Jam: a visual novel about a lonely woman in a disconnected marriage during the pandemic, told through distinctly Singaporean characters. I did the UI and backgrounds and stepped in on character art.',
+          tags: ['Visual novel', 'UI', 'Backgrounds'],
+          href: 'https://kei.framer.website/work/games',
         },
         {
-          title: 'Character sheets & lore',
-          blurb: 'Backstories, relationship charts and world notes.',
-          tags: ['Worldbuilding', 'Characters'],
-        },
-        {
-          title: 'Favourite reads shelf',
-          blurb: 'The stories I recommend to anyone who will listen.',
-          tags: ['Recommendations'],
+          title: 'LoreSmith · Worldbuilding for authors',
+          blurb: 'A web platform where authors build and keep track of their worlds. I designed, built and product-managed it (2026).',
+          tags: ['UI/UX', 'Web dev', 'Product'],
+          href: 'https://loresmith-v0.vercel.app/',
         },
       ],
       placement: {
@@ -255,26 +260,22 @@ export const room: RoomContent = {
       title: 'Gaming & anime',
       tagline: 'Save point reached. Snacks acquired.',
       body: [
-        'Cosy games, big JRPGs, late-night anime marathons. This corner is where most of my colour palettes and character obsessions are born.',
-        'I pay attention to the craft: UI in games, key animation frames, how a soundtrack makes a menu feel like home.',
+        'Games and anime are where most of my colour palettes and character obsessions are born.',
+        "I pay attention to the craft: UI in games, key animation frames, how a soundtrack makes a menu feel like home. And I've designed game UI for jams and volunteer projects.",
       ],
       accent: '#5d7bd5',
-      note: 'Currently: replaying an old favourite and screenshotting every menu.',
       items: [
         {
-          title: 'Game UI studies',
-          blurb: 'Redrawing and analysing menus and HUDs from games I love.',
-          tags: ['UI', 'Study'],
+          title: 'Kids Play Safer',
+          blurb: 'A volunteer project for better.sg: a matching game a caregiver plays with a child, meant to start conversations rather than score right answers. UI design.',
+          tags: ['Game UI', 'Volunteer'],
+          href: 'https://kei.framer.website/work/games',
         },
         {
-          title: 'Pixel art experiments',
-          blurb: 'Tiny sprites and looping animations, 32 pixels at a time.',
-          tags: ['Pixel art', 'Animation'],
-        },
-        {
-          title: 'Watch & play list',
-          blurb: 'The anime and games currently fuelling the fanart pile.',
-          tags: ['Anime', 'Games'],
+          title: 'CMYK',
+          blurb: 'Made in a week for Global Game Jam: a 3D browser shooter where you are a spray can beating enemies with their opposite colour on the colour wheel. My first Unity 3D project; design and art.',
+          tags: ['Game jam', 'Unity', 'Art'],
+          href: 'https://kei.framer.website/work/games',
         },
       ],
       placement: {
@@ -299,26 +300,15 @@ export const room: RoomContent = {
       title: 'Crochet & handmade crafts',
       tagline: 'Turning yarn into tiny friends, one stitch at a time.',
       body: [
-        'After a day of screens, I want to make something I can hold. Amigurumi, granny squares and the occasional slightly lopsided scarf.',
+        'After a day of screens, I want to make something I can hold. Crochet is my slow, offline hobby: some yarn, a hook and a lot of counting.',
         'Handmade things remind me that imperfection is charming, which is a lesson my digital work needs too.',
       ],
       accent: '#d77a94',
-      note: 'Currently: crocheting a family of very round frogs.',
       items: [
         {
-          title: 'Amigurumi friends',
-          blurb: 'Small crocheted characters, many based on my own illustrations.',
-          tags: ['Amigurumi', 'Characters'],
-        },
-        {
-          title: 'Cosy wearables',
-          blurb: 'Hats, scarves and one ambitious cardigan.',
-          tags: ['Wearables', 'Yarn'],
-        },
-        {
-          title: 'Pattern notes',
-          blurb: 'Patterns and stitch diagrams I am writing up to share.',
-          tags: ['Patterns', 'Tutorials'],
+          title: 'Pieces coming soon',
+          blurb: 'Photos of finished pieces will be pinned up here.',
+          tags: ['Crochet', 'Handmade'],
         },
       ],
       placement: {
@@ -343,26 +333,28 @@ export const room: RoomContent = {
       title: 'Learning 3D, animation & creative tech',
       tagline: 'Currently confusing myself with vertices. Send help (and tutorials).',
       body: [
-        'The newest corner of the room. I am learning to model, light and animate, and to build interactive things for the web, like the room you are standing in.',
+        "The newest corner of the room. I'm learning to model, light and animate in Spline, Blender and Nomad, and to build interactive things for the web, like the room you're standing in.",
         'Being a beginner again is humbling and fun. Every wobbly render gets pinned up here.',
       ],
       accent: '#3f9d7c',
-      note: 'Currently: learning rigging so my characters can finally wave.',
       items: [
         {
-          title: 'Low-poly dioramas',
-          blurb: 'Tiny modelled scenes, practising shape, light and colour.',
-          tags: ['Modelling', 'Lighting'],
+          title: '3D Experiments',
+          blurb: 'Interactive Spline scenes you can orbit and zoom: an explosion-implosion, a grainy cube and sphere, a blob and a keyboard (2026).',
+          tags: ['3D', 'Spline', 'Interactive'],
+          href: 'https://kei.framer.website/work/3d',
         },
         {
-          title: 'Animation exercises',
-          blurb: 'Bouncing balls, walk cycles and squashy stretchy things.',
-          tags: ['Animation', 'Fundamentals'],
+          title: 'Motion graphics',
+          blurb: "Short motion pieces, including Skica's launch promo and social posts for Zoey.",
+          tags: ['Motion', 'Video'],
+          href: 'https://kei.framer.website/#reels',
         },
         {
           title: 'This interactive room',
-          blurb: 'A real-time 3D portfolio built with React and Three.js.',
+          blurb: 'A real-time 3D portfolio built with React, Three.js and React Three Fiber.',
           tags: ['WebGL', 'Creative code'],
+          href: 'https://github.com/studio-nest/creative-nerdiness-room',
         },
       ],
       placement: {

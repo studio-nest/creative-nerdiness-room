@@ -1,5 +1,6 @@
 import { room, stations } from '../content';
 import { useRoomStore } from '../state/useRoomStore';
+import { ArtistLinks } from './ArtistLinks';
 import { Icon } from './Icon';
 import { StationContent } from './StationContent';
 
@@ -18,17 +19,7 @@ export function ListView() {
           </p>
         )}
         <p className="list__intro">{room.artist.intro}</p>
-        {room.artist.links.length > 0 && (
-          <ul className="links">
-            {room.artist.links.map((l) => (
-              <li key={l.href}>
-                <a href={l.href} target="_blank" rel="noreferrer noopener">
-                  {l.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-        )}
+        <ArtistLinks />
         {stations.map((s) => (
           <section key={s.id} id={`list-${s.id}`} className="list__section card" style={{ ['--accent' as string]: s.accent }} aria-labelledby={`list-title-${s.id}`}>
             <p className="eyebrow">
