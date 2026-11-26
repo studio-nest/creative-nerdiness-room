@@ -1,6 +1,6 @@
 import type { StationKind } from '../content/types';
 
-const PATHS: Record<StationKind | 'sun' | 'moon' | 'list' | 'room' | 'close' | 'prev' | 'next' | 'help', string> = {
+const PATHS: Record<StationKind | 'sun' | 'moon' | 'list' | 'room' | 'close' | 'prev' | 'next' | 'help' | 'expand', string> = {
   designDesk: 'M4 5h16v10H4zM9 19h6M12 15v4M7 8h5M7 11h8',
   easel: 'M6 4h12v10H6zM9 14l-3 6M15 14l3 6M12 14v6M9 10l2-3 2 2 2-3',
   photoCorner: 'M4 8h4l1.5-2h5L16 8h4v10H4zM12 16a3 3 0 100-6 3 3 0 000 6z',
@@ -15,6 +15,7 @@ const PATHS: Record<StationKind | 'sun' | 'moon' | 'list' | 'room' | 'close' | '
   close: 'M6 6l12 12M18 6L6 18',
   prev: 'M15 5l-7 7 7 7',
   next: 'M9 5l7 7-7 7',
+  expand: 'M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7',
   help: 'M9.5 9a2.5 2.5 0 114 2c-.9.7-1.5 1.2-1.5 2.5M12 17.5h.01M12 21a9 9 0 100-18 9 9 0 000 18z',
 };
 

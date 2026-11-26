@@ -67,6 +67,16 @@ Each station has a shareable link, e.g. `/#/crochet`.
 
 Routing is hash-based, so no server rewrite rules are needed.
 
+### Embedding in another page
+
+Put the live URL in an iframe (in Framer: an **Embed** element set to URL). Inside a frame, or with `?embed` on the URL, the room:
+
+- shows a compact front door and downloads the 3D scene only when someone clicks **Step inside**;
+- lets the mouse wheel and one-finger swipes scroll the host page (drag, or use two fingers, to look around; pinch to zoom);
+- adds a **Full screen** button that opens the standalone room in a new tab.
+
+A frame about 560–640 px tall works well on desktop.
+
 ## Accessibility
 
 - Every station is reachable without the 3D canvas: the dock is a real `<nav>` of buttons, and the list view presents the same content as a plain document.

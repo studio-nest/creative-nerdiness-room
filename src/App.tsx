@@ -1,4 +1,5 @@
-import { lazy, Suspense, useEffect, useMemo } from 'react';
+import { lazy, Suspense, useEffect, useMemo, useState } from 'react';
+import { IS_EMBED } from './lib/embed';
 import { useHashSync } from './lib/useHashSync';
 import { useKeyboardNav } from './lib/useKeyboardNav';
 import { usePrefersReducedMotion } from './lib/usePrefersReducedMotion';
@@ -23,6 +24,8 @@ export function App() {
   const entered = useRoomStore((s) => s.entered);
   const reducedMotion = usePrefersReducedMotion();
   const webgl = useMemo(isWebGLAvailable, []);
+  // Embedded in another page, the 3D scene only downloads once someone asks for it.
+  const [booted, setBooted] = useState(!IS_EMBED);
 
   useEffect(() => {
     if (!webgl) {
@@ -34,11 +37,12 @@ export function App() {
   useHashSync(entered && view === 'room');
 
   const inRoom = view === 'room' && webgl;
+  const showScene = inRoom && booted;
 
   return (
-    <div className="app" data-mode={mode} data-reduced={reducedMotion}>
+    <div className="app" data-mode={mode} data-reduced={reducedMotion} data-embed={IS_EMBED}>
       <div className="backdrop" aria-hidden="true" />
-      {inRoom && (
+      {showScene && (
         <ErrorBoundary
           onError={() =>
             useRoomStore.getState().fallBackToList('Something went wrong while drawing the 3D room, so here it is as a list instead.')
@@ -60,7 +64,7 @@ export function App() {
           <Panel />
         </>
       )}
-      {!entered && <Welcome />}
+      {!entered && <Welcome onBoot={() => setBooted(true)} />}
       <Toast />
       <Announcer />
     </div>

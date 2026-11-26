@@ -3,6 +3,7 @@ import { useThree } from '@react-three/fiber';
 import { CameraControls, CameraControlsImpl } from '@react-three/drei';
 import { getStation, room } from '../content';
 import { ORBIT_LIMITS, resolveCamera } from '../lib/camera';
+import { IS_EMBED } from '../lib/embed';
 import { useRoomStore } from '../state/useRoomStore';
 import { env } from './env';
 
@@ -57,8 +58,14 @@ export function CameraRig() {
       minPolarAngle={ORBIT_LIMITS.minPolar}
       maxPolarAngle={ORBIT_LIMITS.maxPolar}
       dollySpeed={0.6}
-      mouseButtons={{ left: ACTION.ROTATE, middle: ACTION.DOLLY, right: ACTION.NONE, wheel: ACTION.DOLLY }}
-      touches={{ one: ACTION.TOUCH_ROTATE, two: ACTION.TOUCH_DOLLY, three: ACTION.NONE }}
+      // Embedded in a page, the wheel and one-finger swipes scroll the page;
+      // drag with the mouse or two fingers to look around instead.
+      mouseButtons={{ left: ACTION.ROTATE, middle: ACTION.DOLLY, right: ACTION.NONE, wheel: IS_EMBED ? ACTION.NONE : ACTION.DOLLY }}
+      touches={{
+        one: IS_EMBED ? ACTION.NONE : ACTION.TOUCH_ROTATE,
+        two: IS_EMBED ? ACTION.TOUCH_DOLLY_ROTATE : ACTION.TOUCH_DOLLY,
+        three: ACTION.NONE,
+      }}
     />
   );
 }

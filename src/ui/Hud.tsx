@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { room } from '../content';
+import { fullScreenUrl, IS_EMBED } from '../lib/embed';
 import { useRoomStore } from '../state/useRoomStore';
 import { ArtistLinks } from './ArtistLinks';
 import { Icon } from './Icon';
 
 const SHORTCUTS: [string, string][] = [
-  ['Drag / one finger', 'Look around'],
-  ['Scroll / pinch', 'Zoom'],
+  IS_EMBED ? ['Drag / two fingers', 'Look around'] : ['Drag / one finger', 'Look around'],
+  IS_EMBED ? ['Pinch', 'Zoom'] : ['Scroll / pinch', 'Zoom'],
   ['Click / tap', 'Visit a station'],
   ['← →', 'Previous / next station'],
   ['1 – 7', 'Jump to a station'],
@@ -28,6 +29,13 @@ export function Hud() {
         <p>{room.artist.role}</p>
       </div>
       <div className="hud__tools">
+        {IS_EMBED && (
+          <a className="chip" href={fullScreenUrl()} target="_blank" rel="noreferrer noopener">
+            <Icon name="expand" />
+            <span className="chip__text">Full screen</span>
+            <span className="sr-only"> (opens in a new tab)</span>
+          </a>
+        )}
         <button type="button" className="chip" aria-pressed={mode === 'night'} onClick={() => useRoomStore.getState().toggleMode()}>
           <Icon name={mode === 'night' ? 'moon' : 'sun'} />
           <span className="chip__text">Night lights</span>
