@@ -60,7 +60,7 @@ Poses are authored on a sphere: `target`, `azimuth`, `polar`, `distance`, plus a
 Three layers turn the 3D scene into something closer to a drawing:
 
 1. **Cel shading.** `scene/ink.ts` defines `InkToonMaterial`, a `MeshToonMaterial` with a shared four-step ramp, registered with R3F as `<inkToonMaterial>`. Every solid surface uses it (the `Box` / `Cyl` / `Ball` primitives apply it automatically), so light falls in flat washes.
-2. **Ink outlines.** `scene/InkOutlines.tsx` walks the scene once after mount and gives each toon-shaded mesh an inflated, back-face-only copy in a dark colour (inverted hull). Shell normals are smoothed so the line stays closed at hard corners; the vertex shader pushes along the view-space normal with a small positional wobble for uneven line weight, and shrinks with the object's scale. Flat decals, transparent meshes, very small details and anything with `userData.ink === false` are skipped.
+2. **Ink outlines.** `scene/InkOutlines.tsx` walks the scene after mount (and re-checks once a second, so late-mounted meshes are covered) and gives each toon-shaded mesh an inflated, back-face-only copy in a dark colour (inverted hull). Shell normals are smoothed so the line stays closed at hard corners; the vertex shader pushes along the view-space normal with a small positional wobble for uneven line weight, and shrinks with the object's scale. Flat decals, transparent meshes, very small details and anything with `userData.ink === false` are skipped.
 3. **Paper grain.** A CSS `::after` on the stage multiplies an SVG noise texture over the canvas.
 
 ## Decorations
@@ -85,7 +85,7 @@ Three layers turn the 3D scene into something closer to a drawing:
 - One shadow-casting light (2048² map). Night lighting adds a single point light.
 - Per-frame work avoids React: animations mutate refs; the CRT game redraws a 64×48 canvas at ~12 fps.
 - The canvas is unmounted entirely in list view.
-- Measured: the original (pre-restyle) scene ran at ~120 fps on the development laptop. After the restyle the overview costs about 1,500 draw calls and 170k triangles at high quality (about 1,000 in a station close-up); frame rate has not been re-measured. Initial JS ≈ 78 kB gzip; scene chunk ≈ 273 kB gzip.
+- Measured: the original (pre-restyle) scene ran at ~120 fps on the development laptop. After the restyle the overview costs about 1,500 draw calls and 170k triangles at high quality (about 1,000 in a station close-up); ~120 fps on the development laptop. Initial JS ≈ 78 kB gzip; scene chunk ≈ 273 kB gzip.
 
 Known headroom, and the obvious next step: merge static geometry per station (which would also let static outlines collapse into a few draw calls), instance repeated meshes (books, leaves, keys, bulbs), switch to `frameloop="demand"` when idle under reduced motion.
 

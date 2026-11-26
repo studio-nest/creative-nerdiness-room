@@ -27,20 +27,21 @@ export function NonLa() {
     <group>
       <Cyl args={[0.025, 0.025, 0.14, 6]} position={[0, 0.3, 0.07]} rotation={[Math.PI / 2, 0, 0]} color={palette.woodDark} />
       <group ref={hat} position={[0, 0.3, 0.1]}>
-        <group position={[0, -0.3, 0.12]} rotation={[Math.PI / 2 - 0.25, 0, 0]}>
+        {/* Tip mostly up, brim resting on the wall: from the room it reads as a hat in profile, not a target. */}
+        <group position={[0, -0.36, 0.5]} rotation={[0.22, 0, 0]}>
           <mesh castShadow>
-            <coneGeometry args={[0.5, 0.3, 28]} />
+            <coneGeometry args={[0.5, 0.42, 28]} />
             <inkToonMaterial color={palette.straw} />
           </mesh>
-          {[0.17, 0.32, 0.46].map((r) => (
-            <mesh key={r} position={[0, 0.15 - (r / 0.5) * 0.3 + 0.012, 0]} rotation-x={Math.PI / 2}>
+          {[0.16, 0.31, 0.45].map((r) => (
+            <mesh key={r} position={[0, 0.21 - (r / 0.5) * 0.42 + 0.012, 0]} rotation-x={Math.PI / 2}>
               <torusGeometry args={[r, 0.008, 4, 28]} />
               <inkToonMaterial color="#c9a866" />
             </mesh>
           ))}
         </group>
-        <Box size={[0.03, 0.55, 0.01]} position={[-0.12, -0.72, 0.1]} rotation={[0, 0, 0.12]} color={palette.rose} shadow={false} />
-        <Box size={[0.03, 0.5, 0.01]} position={[0.12, -0.7, 0.1]} rotation={[0, 0, -0.14]} color={palette.rose} shadow={false} />
+        <Box size={[0.03, 0.42, 0.012]} position={[-0.14, -0.66, 0.62]} rotation={[0, 0, 0.12]} color={palette.rose} shadow={false} />
+        <Box size={[0.03, 0.38, 0.012]} position={[0.14, -0.64, 0.62]} rotation={[0, 0, -0.14]} color={palette.rose} shadow={false} />
       </group>
     </group>
   );

@@ -69,6 +69,17 @@ Brief: adapt the props from a reference illustration (annotated layout) into the
 
 **Cost:** draw calls went from an unmeasured few hundred to ~1,780; trimming shadows/outlines on tiny objects brought the overview to ~1,500. Added a three-tier quality ladder to compensate. Merging static geometry is the real fix and is on the roadmap.
 
+## Visual check after the restyle
+
+With the app window in view: overview by day and night, close-ups of design, illustration, games, crochet and 3D, the guitar click, and frame rate (~120 fps). Fixed:
+
+1. **Nón lá read as a target or a parasol.** Stood it upright with a taller cone so it reads as a hat in profile.
+2. **Citrus tree blocked the games close-up**, then the crochet close-up after a first move. It now stands against the back wall beside the easel, and the tall book stack moved to the right edge.
+3. **Crayon drawing was hidden behind the easel.** Moved it beside the TV.
+4. **Outlines disappeared after a hot reload.** Meshes that mount after the first scan never got outlines; the pass now re-checks once a second.
+
+Dev-only quirk noted: after editing `room.ts` the hot reload can recreate the store under a still-mounted canvas and leave the welcome screen on "Tidying up". A normal page load is ready in about 1.2 s.
+
 ## Notes
 
 - Subagents were not used; the work was sequential and tightly coupled, so a single thread was more efficient.

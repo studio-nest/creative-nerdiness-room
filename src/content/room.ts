@@ -46,7 +46,7 @@ export const room: RoomContent = {
   decor: [
     { id: 'pegboard', kind: 'pegboard', position: [-2.55, 2.85, -4.17] },
     { id: 'corkboard', kind: 'corkboard', position: [-1.3, 2.9, -4.17] },
-    { id: 'crayon', kind: 'crayonDrawing', position: [0.45, 1.55, -4.17] },
+    { id: 'crayon', kind: 'crayonDrawing', position: [2.15, 2.1, -4.17], scale: 0.8 },
     { id: 'wall-shelf', kind: 'wallShelf', position: [3.0, 3.5, -4.03] },
     { id: 'pothos', kind: 'hangingPothos', position: [-3.6, 4.0, -3.75] },
     { id: 'monstera', kind: 'monstera', position: [-3.5, 0, -3.45], scale: 1.1 },
@@ -54,12 +54,12 @@ export const room: RoomContent = {
     { id: 'non-la', kind: 'nonLa', position: [-4.17, 3.2, 3.3], rotationY: Math.PI / 2 },
     { id: 'leaf-print-a', kind: 'leafPrint', position: [-4.17, 3.62, 1.05], rotationY: Math.PI / 2, variant: 'fern' },
     { id: 'leaf-print-b', kind: 'leafPrint', position: [-4.17, 3.6, 1.8], rotationY: Math.PI / 2, variant: 'sprig' },
-    { id: 'citrus', kind: 'citrusTree', position: [3.6, 0, 0.1] },
+    { id: 'citrus', kind: 'citrusTree', position: [0.3, 0, -3.72] },
     { id: 'beanbag-sketch', kind: 'beanbag', position: [0.55, 0, 0.3], rotationY: 0.5, variant: 'sketchbook' },
     { id: 'beanbag-reading', kind: 'beanbag', position: [-1.3, 0, 3.3], rotationY: 0.9, variant: 'reading' },
     { id: 'letter-tray', kind: 'letterTray', position: [-0.25, 0, 3.25] },
     { id: 'books-nook', kind: 'bookStack', position: [-2.15, 0, 3.6], rotationY: 0.4 },
-    { id: 'books-desk', kind: 'bookStack', position: [0.3, 0, -3.5], rotationY: -0.3, variant: 'tall' },
+    { id: 'books-desk', kind: 'bookStack', position: [3.75, 0, 0.2], rotationY: -0.3, variant: 'tall' },
   ],
 
   catLines: [

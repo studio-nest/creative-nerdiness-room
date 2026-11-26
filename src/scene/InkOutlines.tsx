@@ -29,8 +29,7 @@ const fragmentShader = /* glsl */ `
 `;
 
 /**
- * Draws an ink line around every solid object. After the scene mounts it
- * walks the graph once and gives each toon-shaded mesh a slightly inflated,
+ * Draws an ink line around every solid object. It walks the scene graph and gives each toon-shaded mesh a slightly inflated,
  * inside-out copy of itself in a dark colour (the "inverted hull" trick).
  * Normals are smoothed first so the shell stays closed at hard corners.
  */
@@ -48,44 +47,61 @@ export function InkOutlines({ color = '#4a2f3d', thickness = 0.02 }: { color?: s
     [color, thickness],
   );
 
+  // Outline everything present now, then re-check now and then so meshes that
+  // mount later (a remount, hot reload, a prop added at runtime) get one too.
+  const shells = useMemo(() => new Map<string, BufferGeometry>(), []);
   useEffect(() => {
-    const shells = new Map<string, BufferGeometry>();
     const added: Mesh[] = [];
-    const targets: Mesh[] = [];
-    scene.traverse((o) => {
-      const mesh = o as Mesh;
-      if (!mesh.isMesh || mesh.userData.isInk || mesh.userData.ink === false) return;
-      if (Array.isArray(mesh.material)) return;
-      const mat = mesh.material as Material & { isMeshToonMaterial?: boolean };
-      if (!mat.isMeshToonMaterial || mat.transparent || SKIP.has(mesh.geometry.type)) return;
-      // Pins, keys and eyes are too small for a line to read; skip them.
-      if (!mesh.geometry.boundingSphere) mesh.geometry.computeBoundingSphere();
-      if ((mesh.geometry.boundingSphere?.radius ?? 1) < 0.045) return;
-      targets.push(mesh);
-    });
-    for (const mesh of targets) {
-      let shell = shells.get(mesh.geometry.uuid);
-      if (!shell) {
-        const bare = mesh.geometry.clone();
-        bare.deleteAttribute('normal');
-        bare.deleteAttribute('uv');
-        shell = mergeVertices(bare, 1e-4);
-        shell.computeVertexNormals();
-        bare.dispose();
-        shells.set(mesh.geometry.uuid, shell);
+    const ink = () => {
+      const targets: Mesh[] = [];
+      scene.traverse((o) => {
+        const mesh = o as Mesh;
+        if (!mesh.isMesh || mesh.userData.isInk || mesh.userData.inked || mesh.userData.ink === false) return;
+        if (Array.isArray(mesh.material)) return;
+        const mat = mesh.material as Material & { isMeshToonMaterial?: boolean };
+        if (!mat.isMeshToonMaterial || mat.transparent || SKIP.has(mesh.geometry.type)) return;
+        // Pins, keys and eyes are too small for a line to read; skip them.
+        if (!mesh.geometry.boundingSphere) mesh.geometry.computeBoundingSphere();
+        if ((mesh.geometry.boundingSphere?.radius ?? 1) < 0.045) return;
+        targets.push(mesh);
+      });
+      for (const mesh of targets) {
+        let shell = shells.get(mesh.geometry.uuid);
+        if (!shell) {
+          const bare = mesh.geometry.clone();
+          bare.deleteAttribute('normal');
+          bare.deleteAttribute('uv');
+          shell = mergeVertices(bare, 1e-4);
+          shell.computeVertexNormals();
+          bare.dispose();
+          shells.set(mesh.geometry.uuid, shell);
+        }
+        const outline = new Mesh(shell, material);
+        outline.userData.isInk = true;
+        outline.raycast = () => {};
+        mesh.userData.inked = true;
+        mesh.add(outline);
+        added.push(outline);
       }
-      const outline = new Mesh(shell, material);
-      outline.userData.isInk = true;
-      outline.raycast = () => {};
-      mesh.add(outline);
-      added.push(outline);
-    }
-    return () => {
-      added.forEach((o) => o.removeFromParent());
-      shells.forEach((g) => g.dispose());
     };
-  }, [scene, material]);
+    ink();
+    const timer = window.setInterval(ink, 1000);
+    return () => {
+      window.clearInterval(timer);
+      added.forEach((o) => {
+        if (o.parent) o.parent.userData.inked = false;
+        o.removeFromParent();
+      });
+    };
+  }, [scene, material, shells]);
 
+  useEffect(
+    () => () => {
+      shells.forEach((g) => g.dispose());
+      shells.clear();
+    },
+    [shells],
+  );
   useEffect(() => () => material.dispose(), [material]);
   // Outlines roughly double the draw calls, so the lowest tier drops them.
   useEffect(() => {
